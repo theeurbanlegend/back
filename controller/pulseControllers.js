@@ -22,6 +22,20 @@ const getPulse=async (req,res)=>{
     }
     return res.status(200).json(pulse)
 }
+const getMostRecentPulse=async (req,res)=>{
+    const mostRecentEntry = await Pulse.findOne().sort({ createdAt: -1 }).limit(1)
+
+    if (mostRecentEntry) {
+    // The mostRecentEntry variable now contains the most recent document
+    
+    return res.status(200).json(mostRecentEntry)
+    } else {
+    // Handle the case where there are no entries in the collection
+    
+    return res.status(404).json({msg:"no entries"})
+    }
+
+}
 const getAllPulses=async(req,res)=>{
     const pulses=await Pulse.find()
     if(!pulses){
@@ -43,4 +57,4 @@ const deletePulse=async(req,res)=>{
     }
     return res.status(200).json(pulse)
 }
-module.exports={addPulse,getAllPulses,getPulse,deletePulse}
+module.exports={addPulse,getAllPulses,getPulse,getMostRecentPulse,deletePulse}
