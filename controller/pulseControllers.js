@@ -3,6 +3,7 @@ const { default: mongoose } = require('mongoose')
 
 const addPulse=async (req,res)=>{
     const {allUsers,verified,exeTime}=req.body
+    console.log(req.body)
     if(!allUsers||!verified||!exeTime){
         return res.status(400).json({msg:"Inadequate pulse data"})
     }
