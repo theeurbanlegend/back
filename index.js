@@ -6,7 +6,7 @@ const connectDB = require('./db/db');
 const cors = require('cors');
 const { addPulse } = require('./controller/pulseControllers');
 require('dotenv').config();
-
+const {rateLimit}=require('express-rate-limit')
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server,{
@@ -20,6 +20,12 @@ app.use(express.json());
 app.use(cors());
 connectDB();
 
+// Define the rate limiter
+const limiter = rateLimit({
+  windowMs: 10 * 60 * 1000, // 10 minutes
+  max: 1, // 1 request per windowMs
+  message: 'Auto limited defective Pulse Data!',
+});
 // Use pulse data routes
 app.use('/api/pulseData', pulseDataRoutes);
 
@@ -30,7 +36,7 @@ io.on('connection', (socket) => {
 });
 
 // Handle POST request on a specific route
-app.post('/api/pulseData/add', (req, res) => {
+app.post('/api/pulseData/add',limiter, (req, res) => {
   // Assuming you have data in req.body that you want to broadcast
   const dataToBroadcast = req.body;
   addPulse(req,res)
