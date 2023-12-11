@@ -22,7 +22,7 @@ connectDB();
 
 // Define the rate limiter
 const limiter = rateLimit({
-  windowMs: 10 * 60 * 1000, // 10 minutes
+  windowMs: 7 * 60 * 1000, // 10 minutes
   max: 1, // 1 request per windowMs
   message: {
     error: "Too many requests",
