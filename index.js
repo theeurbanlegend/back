@@ -24,7 +24,10 @@ connectDB();
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 minutes
   max: 1, // 1 request per windowMs
-  message: 'Auto limited defective Pulse Data!',
+  message: {
+    error: "Too many requests",
+    details: "Auto limit defective pulse Data."
+  }
 });
 // Use pulse data routes
 app.use('/api/pulseData', pulseDataRoutes);
